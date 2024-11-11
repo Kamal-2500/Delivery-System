@@ -12,7 +12,7 @@ export const validateLogin = [
     body("password")
         .notEmpty().withMessage("Password is required")
         .bail().isString().withMessage("Password must be a string")
-        .bail().isLength({ min: 6 }).withMessage("Password must be at least 6 characters long"),
+        .bail().isLength({ min: 6, max: 13 }).withMessage("Password must be at least 6 characters long and no longer than 13 characters"),
 
     (req: Request, res: Response, next: NextFunction) => {
         try {

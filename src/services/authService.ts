@@ -1,17 +1,20 @@
-import { QueryResult } from "mysql2";
 import { User } from "../models";
 import { BaseResponse, LoginResponse } from "../types";
-import { ConflictError, JWTUtils, pool, UnauthorizedError } from "../utils";
+import { ConflictError, DBUtils, JWTUtils, UnauthorizedError } from "../utils";
 import bcrypt from "bcrypt";
 import { configs } from "../configs";
 
 export class AuthService {
-
+    /**
+     * Registers a new user with the given email, phone, name, and password.
+     * @param user The user to register.
+     * @returns A promise that resolves to a BaseResponse object containing a success flag.
+     */
     public async register(user: User): Promise<BaseResponse> {
-        const connection = await pool.getConnection();
+        const connection = await DBUtils.getPool().getConnection();
         try {
             const [result]: any = await connection.execute(
-                'SELECT id FROM users WHERE email = ?',
+                "SELECT id FROM users WHERE email = ?",
                 [user.email]
             );
 
@@ -33,11 +36,18 @@ export class AuthService {
             connection.release();
         }
     }
+
+    /**
+     * Authenticates a user with the given email and password.
+     * @param email The email of the user.
+     * @param password The password of the user.
+     * @returns A promise that resolves to a LoginResponse object containing the JWT token and expiration time.
+     */
     public async login(email: string, password: string): Promise<LoginResponse> {
-        const connection = await pool.getConnection();
+        const connection = await DBUtils.getPool().getConnection();
         try {
             const [rows]: any = await connection.execute(
-                'SELECT id, email, password_hash FROM users WHERE email = ?',
+                "SELECT id, email, password_hash FROM users WHERE email = ?",
                 [email]
             );
 

@@ -3,7 +3,7 @@ import { body, validationResult } from "express-validator";
 import { BadRequestError } from "../../utils";
 import { PackageType } from "../../types";
 
-export const validaeCalculateCharges = [
+export const validateCalculateCharges = [
     body("pickupLocation")
         .exists().withMessage("Pickup location is required")
         .bail().isObject().withMessage("Pickup location must be an object"),
@@ -29,20 +29,19 @@ export const validaeCalculateCharges = [
 
     body("pickupLocation.city")
         .optional()
-        .isString().withMessage("Pickup city must be a string"),
+        .isString().withMessage("Pickup city must be a string")
+        .bail().isLength({ max: 100 }).withMessage("Pickup city must be no longer than 100 characters"),
 
     body("pickupLocation.state")
         .optional()
-        .isString().withMessage("Pickup state must be a string"),
+        .isString().withMessage("Pickup state must be a string")
+        .bail().isLength({ max: 100 }).withMessage("Pickup state must be no longer than 100 characters"),
 
     body("pickupLocation.postalCode")
         .notEmpty().withMessage("Pickup postal code is required")
         .bail().isString().withMessage("Pickup postal code must be a string")
+        .bail().isLength({ min: 6, max: 6 }).withMessage("Pickup postal code must be 6 digits long")
         .bail().matches(/^\d+$/).withMessage("Pickup postal code must contain only digits"),
-
-    body("pickupLocation.country")
-        .optional()
-        .isString().withMessage("Pickup country must be a string"),
 
     // Drop location validation
     body("dropLocation.latitude")
@@ -59,20 +58,20 @@ export const validaeCalculateCharges = [
 
     body("dropLocation.city")
         .optional()
-        .isString().withMessage("Drop city must be a string"),
+        .isString().withMessage("Drop city must be a string")
+        .bail().isLength({ max: 100 }).withMessage("Drop city must be no longer than 100 characters"),
 
     body("dropLocation.state")
         .optional()
-        .isString().withMessage("Drop state must be a string"),
+        .isString().withMessage("Drop state must be a string")
+        .bail().isLength({ max: 100 }).withMessage("Drop state must be no longer than 100 characters"),
 
     body("dropLocation.postalCode")
         .notEmpty().withMessage("Drop postal code is required")
         .bail().isString().withMessage("Drop postal code must be a string")
+        .bail().isLength({ min: 6, max: 6 }).withMessage("Drop postal code must be 6 digits long")
         .bail().matches(/^\d+$/).withMessage("Drop postal code must contain only digits"),
 
-    body("dropLocation.country")
-        .optional()
-        .isString().withMessage("Drop country must be a string"),
 
     // Package details validation
 
@@ -99,14 +98,14 @@ export const validaeCalculateCharges = [
         .bail().isFloat({ min: 0.1 }).withMessage("Length must be greater than 0"),
 
     body("packages.*.type")
-    .notEmpty().withMessage("Package type is required")
-    .bail().isString().withMessage("Package type must be a string")
-    .bail().isIn(Object.values(PackageType)).withMessage("Invalid product type"),
+        .notEmpty().withMessage("Package type is required")
+        .bail().isString().withMessage("Package type must be a string")
+        .bail().isIn(Object.values(PackageType)).withMessage("Invalid product type"),
 
     body("packages.*.description")
         .optional()
         .isString().withMessage("Description must be a string")
-        .bail().isLength({ max: 200 }).withMessage('Description must be no longer than 200 characters'),
+        .bail().isLength({ max: 200 }).withMessage("Description must be no longer than 200 characters"),
 
     body("packages.*.amount")
         .optional()

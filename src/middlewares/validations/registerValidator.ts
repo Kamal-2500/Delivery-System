@@ -9,13 +9,13 @@ export const validateRegister = [
         .bail().isEmail().withMessage("Email must be valid")
         .bail().isLength({ max: 255 }).withMessage("Email must be no longer than 255 characters"),
 
-        body("phone")
+    body("phone")
         .notEmpty().withMessage("Phone is required")
         .bail().isString().withMessage("Phone must be a string")
         .bail().matches(/^\d+$/).withMessage("Phonr must contain only digits")
-        .bail().isLength({ min: 10, max: 10 }).withMessage("Phone must be no longer than 10 characters"),
+        .bail().isLength({ min: 10, max: 10 }).withMessage("Phone must be 10 digits long"),
 
-        body("name")
+    body("name")
         .notEmpty().withMessage("Name is required")
         .bail().isString().withMessage("Name must be a string")
         .bail().isLength({ max: 255 }).withMessage("Name must be no longer than 255 characters"),
@@ -23,7 +23,7 @@ export const validateRegister = [
     body("password")
         .notEmpty().withMessage("Password is required")
         .bail().isString().withMessage("Password must be a string")
-        .bail().isLength({ min: 6 }).withMessage("Password must be at least 6 characters long"),
+        .bail().isLength({ min: 6, max: 13 }).withMessage("Password must be at least 6 characters long and no longer than 13 characters"),
 
     (req: Request, res: Response, next: NextFunction) => {
         try {

@@ -6,7 +6,6 @@ export interface Location {
     city?: string;
     state?: string;
     postalCode: string;
-    country?: string;
     createdAt?: Date;
     updatedAt?: Date;
 }

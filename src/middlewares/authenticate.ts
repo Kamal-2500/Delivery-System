@@ -12,11 +12,11 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
     try {
         const authHeader = req.headers.authorization;
 
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
             throw new UnauthorizedError("Invalid token");
         }
 
-        const token = authHeader!.split(' ')[1];
+        const token = authHeader!.split(" ")[1];
 
         let decoded: any;
         try {

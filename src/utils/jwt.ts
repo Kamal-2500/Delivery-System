@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken';
-import { configs } from '../configs';
-import { User } from '../models';
+import jwt from "jsonwebtoken";
+import { configs } from "../configs";
+import { User } from "../models";
 
 export class JWTUtils {
 
