@@ -4,23 +4,32 @@ import { BadRequestError } from "../../utils";
 import { PackageType } from "../../types";
 
 export const validateCalculateCharges = [
+    // Pickup location validation
+
     body("pickupLocation")
         .exists().withMessage("Pickup location is required")
         .bail().isObject().withMessage("Pickup location must be an object"),
 
-    body("dropLocation").exists().withMessage("Drop location is required")
-        .bail().isObject().withMessage("Drop location must be an object"),
-
-    body("packages").exists().withMessage("Packages is required")
-        .bail().isArray().withMessage("Packages must be an array"),
-
-    // Pickup location validation
     body("pickupLocation.latitude")
-        .notEmpty().withMessage("Pickup latitude is required")
+        .exists().withMessage("Pickup latitude is required")
+        .bail().isNumeric().withMessage("Pickup latitude must be a number")
+        .bail().custom((value) => {
+            if (Array.isArray(value)) {
+                return false;
+            }
+            return true;
+        }).withMessage("Pickup latitude must be a number")
         .bail().isFloat({ min: -90, max: 90 }).withMessage("Pickup latitude must be a valid number between -90 and 90"),
 
     body("pickupLocation.longitude")
-        .notEmpty().withMessage("Pickup longitude is required")
+        .exists().withMessage("Pickup longitude is required")
+        .bail().isNumeric().withMessage("Pickup longitude must be a number")
+        .bail().custom((value) => {
+            if (Array.isArray(value)) {
+                return false;
+            }
+            return true;
+        }).withMessage("Pickup longitude must be a number")
         .bail().isFloat({ min: -180, max: 180 }).withMessage("Pickup longitude must be a valid number between -180 and 180"),
 
     body("pickupLocation.address")
@@ -44,12 +53,29 @@ export const validateCalculateCharges = [
         .bail().matches(/^\d+$/).withMessage("Pickup postal code must contain only digits"),
 
     // Drop location validation
+    body("dropLocation").exists().withMessage("Drop location is required")
+        .bail().isObject().withMessage("Drop location must be an object"),
+
     body("dropLocation.latitude")
-        .notEmpty().withMessage("Drop latitude is required")
+        .exists().withMessage("Drop latitude is required")
+        .bail().isNumeric().withMessage("Drop latitude must be a number")
+        .bail().custom((value) => {
+            if (Array.isArray(value)) {
+                return false;
+            }
+            return true;
+        }).withMessage("Drop latitude must be a number")
         .bail().isFloat({ min: -90, max: 90 }).withMessage("Drop latitude must be a valid number between -90 and 90"),
 
     body("dropLocation.longitude")
-        .notEmpty().withMessage("Drop longitude is required")
+        .exists().withMessage("Drop longitude is required")
+        .bail().isNumeric().withMessage("Drop longitude must be a number")
+        .bail().custom((value) => {
+            if (Array.isArray(value)) {
+                return false;
+            }
+            return true;
+        }).withMessage("Drop longitude must be a number")
         .bail().isFloat({ min: -180, max: 180 }).withMessage("Drop longitude must be a valid number between -180 and 180"),
 
     body("dropLocation.address")
@@ -74,27 +100,54 @@ export const validateCalculateCharges = [
 
 
     // Package details validation
+    body("packages").exists().withMessage("Packages is required")
+        .bail().isArray().withMessage("Packages must be an array"),
 
     body("packages").custom((value: any) => value.length > 0).withMessage("At least one package is required"),
 
     body("packages.*.weight")
-        .notEmpty().withMessage("Package weight is required")
-        .bail().isDecimal().withMessage("Weight must be a number")
+        .exists().withMessage("Package weight is required")
+        .bail().isNumeric().withMessage("Weight must be a number")
+        .bail().custom((value) => {
+            if (Array.isArray(value)) {
+                return false;
+            }
+            return true;
+        }).withMessage("Weight must be a number")
         .bail().isFloat({ min: 0.1 }).withMessage("Weight must be greater than 0"),
 
+
     body("packages.*.height")
-        .notEmpty().withMessage("Package height is required")
-        .bail().isDecimal().withMessage("Height must be a number")
+        .exists().withMessage("Package height is required")
+        .bail().isNumeric().withMessage("Height must be a number")
+        .bail().custom((value) => {
+            if (Array.isArray(value)) {
+                return false;
+            }
+            return true;
+        }).withMessage("Height must be a number")
         .bail().isFloat({ min: 0.1 }).withMessage("Height must be greater than 0"),
 
     body("packages.*.width")
-        .notEmpty().withMessage("Package width is required")
-        .bail().isDecimal().withMessage("Width must be a number")
+        .exists().withMessage("Package width is required")
+        .bail().isNumeric().withMessage("Width must be a number")
+        .bail().custom((value) => {
+            if (Array.isArray(value)) {
+                return false;
+            }
+            return true;
+        }).withMessage("Width must be a number")
         .bail().isFloat({ min: 0.1 }).withMessage("Width must be greater than 0"),
 
     body("packages.*.length")
-        .notEmpty().withMessage("Package length is required")
-        .bail().isDecimal().withMessage("Length must be a number")
+        .exists().withMessage("Package length is required")
+        .bail().isNumeric().withMessage("Length must be a number")
+        .bail().custom((value) => {
+            if (Array.isArray(value)) {
+                return false;
+            }
+            return true;
+        }).withMessage("Length must be a number")
         .bail().isFloat({ min: 0.1 }).withMessage("Length must be greater than 0"),
 
     body("packages.*.type")
@@ -109,7 +162,13 @@ export const validateCalculateCharges = [
 
     body("packages.*.amount")
         .optional()
-        .isDecimal().withMessage("Amount must be a number")
+        .isNumeric().withMessage("Amount must be a number")
+        .bail().custom((value) => {
+            if (Array.isArray(value)) {
+                return false;
+            }
+            return true;
+        }).withMessage("Amount must be a number")
         .bail().isFloat({ min: 1 }).withMessage("Amount must be greater than or equal to 1"),
 
     (req: Request, res: Response, next: NextFunction) => {

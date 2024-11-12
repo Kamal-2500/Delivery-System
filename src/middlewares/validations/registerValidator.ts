@@ -12,7 +12,7 @@ export const validateRegister = [
     body("phone")
         .notEmpty().withMessage("Phone is required")
         .bail().isString().withMessage("Phone must be a string")
-        .bail().matches(/^\d+$/).withMessage("Phonr must contain only digits")
+        .bail().matches(/^\d+$/).withMessage("Phone must contain only digits")
         .bail().isLength({ min: 10, max: 10 }).withMessage("Phone must be 10 digits long"),
 
     body("name")
