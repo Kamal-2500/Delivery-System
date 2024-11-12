@@ -5,7 +5,11 @@
   "main": "server.js",
   "scripts": {
     "dev": "set NODE_ENV=development&& nodemon src/server.ts",
-    "test": "set NODE_ENV=development&& jest --detectOpenHandles"
+    "test": "set NODE_ENV=development&& jest --detectOpenHandles",
+    "test:auth": "set NODE_ENV=development&& jest --detectOpenHandles --testPathPattern=auth",
+    "test:calculateCharges": "set NODE_ENV=development&& jest --detectOpenHandles --testPathPattern=calculateCharges",
+    "test:bookDelivery": "set NODE_ENV=development&& jest --detectOpenHandles --testPathPattern=bookDelivery",
+    "test:cancelDelivery": "set NODE_ENV=development&& jest --detectOpenHandles --testPathPattern=cancelDelivery"
   },
   "repository": {
     "type": "git",

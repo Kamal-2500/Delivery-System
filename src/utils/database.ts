@@ -10,7 +10,7 @@ export class DBUtils {
     return mysql.createPool({
         host: configs.db.host,
         user: configs.db.user,
-        password: "",
+        password: configs.db.password,
         database: configs.db.name
       });
   }
