@@ -1,6 +1,6 @@
-# Delivery APIs Implementation
+# Delivery System Implementation
 
-This document outlines the implementation of the delivery APIs in the backend using Node.js, TypeScript, Express, and MySQL.
+The Delivery System enables users to manage deliveries efficiently, offering secure authentication with login and registration APIs. It includes delivery functionalities such as calculating charges, booking deliveries, canceling bookings, and check booking status ensuring a seamless experience.
 
 ## Technologies Used
 - **Node.js**: A JavaScript runtime environment for server-side development.
@@ -9,13 +9,13 @@ This document outlines the implementation of the delivery APIs in the backend us
 - **MySQL**: A relational database management system for storing and managing delivery-related data.
 - **Jest**: A JavaScript testing framework for unit testing.
 - **Supertest**: A library for testing HTTP servers using Express.
-- **Express Validator**: A set of express.js middlewares that wraps the validator.js library, used for input validation.
+- **Express Validator**: Used for input validation.
 - **JWT**: JSON Web Tokens for authentication and authorization.
 
 ## API Endpoints
 
 1. **Register API**:
-   - Functionality: Registers a new user with the provided username, email, and password.
+   - Functionality: Registers a new user with the provided name, phone, email, and password.
    - Input Validation: Checks for the presence and validity of the required fields.
    - Authentication: No authentication required.
 
@@ -30,18 +30,18 @@ This document outlines the implementation of the delivery APIs in the backend us
    - Authentication: Requires a valid JWT token.
 
 4. **Book Delivery API**:
-   - Functionality: Books a delivery with the provided pickup and drop locations.
-   - Input Validation: Checks for the presence and validity of the required fields (pickup location, drop location, package details).
+   - Functionality: Books a delivery with the provided delivery id.
+   - Input Validation: Checks for the presence and validity of the required fields (delivery id).
    - Authentication: Requires a valid JWT token.
 
 5. **Cancel Delivery API**:
    - Functionality: Cancels a delivery before it is picked up.
-   - Input Validation: Checks for the presence and validity of the delivery ID.
-   - Authentication: Requires a valid JWT token and checks if the user is the one who booked the delivery.
+   - Input Validation: Checks for the presence and validity of the booking id.
+   - Authentication: Requires a valid JWT token.
 
-6. **Get Order Status API**:
+6. **Check Delivery Status API**:
    - Functionality: Retrieves the status of a delivery.
-   - Input Validation: Checks for the presence and validity of the delivery ID.
+   - Input Validation: Checks for the presence and validity of the booking ID.
    - Authentication: Requires a valid JWT token.
 
 ## Input Validation
@@ -57,6 +57,10 @@ Additionally, All API checks if the user making the request is the one who booke
 ## Unit Tests
 
 I have written unit tests for the APIs using Jest and Supertest. 
+
+## Error Handling
+
+Handled errors using custom error handler middleware. 
 
 ## API Documentation
 
